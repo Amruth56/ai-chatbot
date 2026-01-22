@@ -40,7 +40,7 @@ const ChatInput = () => {
           disabled={isStreaming}
           placeholder={isStreaming ? "AI is thinking..." : "Ask me anything..."}
           rows={1}
-          className="w-full p-3 pr-12 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all resize-none shadow-sm overflow-hidden bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-50 border-2 border-slate-100 dark:border-slate-700"
+          className="w-full p-3 pr-12 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all resize-none shadow-sm overflow-hidden bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-50 border-2 border-slate-300 dark:border-slate-700"
         />
       </div>
       

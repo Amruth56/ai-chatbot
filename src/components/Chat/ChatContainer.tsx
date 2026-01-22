@@ -9,7 +9,7 @@ const ChatContainer = () => {
   const { theme } = useTheme();
 
   return (
-    <div className={`flex flex-col h-screen max-w-4xl mx-auto shadow-2xl transition-colors duration-300 overflow-hidden bg-white text-slate-900 border-x border-slate-100 ${theme} dark:bg-[#0f172a] dark:text-slate-50 dark:border-slate-800`}>
+    <div className={`${theme} flex flex-col h-screen max-w-4xl mx-auto shadow-2xl transition-colors duration-300 overflow-hidden bg-white text-slate-900 border-x border-slate-100 dark:bg-[#0f172a] dark:text-slate-50 dark:border-slate-800`}>
       <header className="flex items-center justify-between px-6 py-4 border-b backdrop-blur-md sticky top-0 z-10 transition-colors bg-white/80 dark:bg-[#1e293b]/80 border-slate-100 dark:border-slate-800">
         <div className="flex flex-col">
           <h1 className="text-xl font-bold">AI Chatbot</h1>

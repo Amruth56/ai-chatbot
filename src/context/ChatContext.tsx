@@ -8,7 +8,7 @@ const ChatContext = createContext<ChatContextType | null>(null);
 export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     const [messages, setMessages] = useLocalStorage<Message[]>("chat", []);
     const [isStreaming, setisStreaming] = useState(false);
-    const [connected] = useState(true); // Always true for direct API calls
+    const [connected] = useState(true);
 
     const sendMessage = async (text: string) => {
         const userMsg: Message = {
