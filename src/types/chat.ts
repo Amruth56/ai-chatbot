@@ -4,3 +4,11 @@ export type Message = {
     content: string;
     timestamp: number;
 }
+
+export type ChatContextType = {
+  messages: Message[];
+  sendMessage: (text: string) => void;
+  clearChat: () => void;
+  isStreaming: boolean;
+  connected: boolean;
+};
