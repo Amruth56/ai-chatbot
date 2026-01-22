@@ -1,4 +1,4 @@
-import { useChat } from '../../context/useChat'
+import { useChat } from '../../context/ChatContext'
 import MessageBubble from './MessageBubble'
 import TypingIndicator from './TypingIndicator';
 import { useAutoScroll } from "../../hooks/useAutoScroll";

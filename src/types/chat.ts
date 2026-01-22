@@ -1,9 +1,9 @@
 export type Message = {
-    id: string;
-    role: 'user' | 'assistant' | 'system';
-    content: string;
-    timestamp: number;
-}
+  id: string;
+  role: "user" | "assistant" | "system";
+  content: string;
+  timestamp: number;
+};
 
 export type ChatContextType = {
   messages: Message[];
@@ -12,3 +12,10 @@ export type ChatContextType = {
   isStreaming: boolean;
   connected: boolean;
 };
+
+export type Theme = "light" | "dark";
+
+export interface ThemeContextType {
+  theme: Theme;
+  toggle: () => void;
+}

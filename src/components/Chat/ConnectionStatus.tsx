@@ -1,4 +1,4 @@
-import { useChat } from '../../context/useChat'
+import { useChat } from '../../context/ChatContext'
 
 const ConnectionStatus = () => {
   const { connected } = useChat();
