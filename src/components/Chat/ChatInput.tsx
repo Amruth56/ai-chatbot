@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { useChat } from '../../context/ChatContext';
+import { useChat } from '../../context/useChat';
 
 const ChatInput = () => {
   const [text, setText] = useState("");
@@ -40,9 +40,16 @@ const ChatInput = () => {
           disabled={isStreaming}
           placeholder={isStreaming ? "AI is thinking..." : "Ask me anything..."}
           rows={1}
-          className="w-full p-3 pr-12 bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all resize-none shadow-sm dark:text-white disabled:opacity-50"
+          className="w-full p-3 pr-12 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all resize-none shadow-sm overflow-hidden"
+          style={{ 
+            scrollbarWidth: 'none', 
+            msOverflowStyle: 'none',
+            backgroundColor: 'var(--input-bg)',
+            color: 'var(--text-color)',
+            border: '2px solid var(--border-color)'
+          }}
         />
-        <div className="absolute right-3 bottom-3 text-[10px] text-gray-400 select-none">
+        <div className="absolute right-4 bottom-3 text-[10px] text-gray-400 select-none font-medium">
           {text.length}/1000
         </div>
       </div>
@@ -50,10 +57,10 @@ const ChatInput = () => {
       <button
         type="submit"
         disabled={!text.trim() || isStreaming}
-        className="p-3 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white rounded-xl shadow-md transition-all flex-shrink-0"
+        className="p-4 cursor-pointer"
         aria-label="Send message"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        Send
       </button>
     </form>
   )

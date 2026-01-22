@@ -1,13 +1,87 @@
 @import "tailwindcss";
 
 :root {
+  --bg-color: #ffffff;
+  --text-color: #1a1a1a;
+  --header-bg: #ffffff;
+  --border-color: #f1f5f9;
+  --input-bg: #ffffff;
+  --bubble-ai-bg: #f3f4f6;
+  --bubble-ai-text: #1a1a1a;
+  --bubble-ai-border: transparent;
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
 }
 
-body {
+/* Outer page background - remains constant */
+html,
+body,
+#root {
+  height: 100%;
   margin: 0;
-  min-width: 320px;
-  min-height: 100vh;
+  padding: 0;
+  background-color: #0f172a; /* Keep outer background dark/navy for contrast as seen in original design */
+  color: #ffffff;
+}
+
+/* Chatbot specific theme variables */
+.chatbot-container {
+  --bg-color: #ffffff;
+  --text-color: #1a1a1a;
+  --header-bg: #ffffff;
+  --border-color: #f1f5f9;
+  --input-bg: #ffffff;
+  --bubble-ai-bg: #f3f4f6;
+  --bubble-ai-text: #1a1a1a;
+  --bubble-ai-border: #e5e7eb;
+  color: var(--text-color);
+}
+
+.chatbot-container.dark {
+  --bg-color: #0f172a;
+  --text-color: #f8fafc;
+  --header-bg: #1e293b;
+  --border-color: #334155;
+  --input-bg: #1e293b;
+  --bubble-ai-bg: #1e293b;
+  --bubble-ai-text: #f8fafc;
+  --bubble-ai-border: #334155;
+}
+
+/* Enforce variables on the container's children */
+.chatbot-container * {
+  border-color: var(--border-color);
+}
+
+.bubble-ai {
+  background-color: var(--bubble-ai-bg) !important;
+  color: var(--bubble-ai-text) !important;
+  border-color: var(--bubble-ai-border) !important;
+}
+
+.bubble-user {
+  background-color: #2563eb !important;
+  color: #ffffff !important;
+}
+
+/* Input/Textarea overrides */
+.chatbot-container textarea {
+  background-color: var(--input-bg);
+  color: var(--text-color);
+  border-color: var(--border-color);
+}
+
+/* Scrollbar and other utilities */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+textarea {
+  scrollbar-width: none;
+}
+textarea::-webkit-scrollbar {
+  display: none;
 }
