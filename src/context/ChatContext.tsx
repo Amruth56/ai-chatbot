@@ -43,14 +43,27 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
             setCurrentAssistantId(null);
         };
 
+        const handleStatus = (e: any) => {
+            const { type, message } = e.detail;
+            const statusMsg: Message = {
+                id: uuid(),
+                role: 'system',
+                content: `${type === 'connected' ? '🟢' : '🔴'} ${message}`,
+                timestamp: Date.now()
+            };
+            setMessages((prev) => [...prev, statusMsg]);
+        };
+
         window.addEventListener('ws-chunk', handleChunk);
         window.addEventListener('ws-end', handleEnd);
         window.addEventListener('ws-error', handleError);
+        window.addEventListener('ws-status', handleStatus);
 
         return () => {
             window.removeEventListener('ws-chunk', handleChunk);
             window.removeEventListener('ws-end', handleEnd);
             window.removeEventListener('ws-error', handleError);
+            window.removeEventListener('ws-status', handleStatus);
         };
     }, [currentAssistantId, setMessages]);
 

@@ -17,6 +17,11 @@ export const useWebSocket = (url: string) => {
       console.log("WebSocket Connected");
       setConnected(true);
       setError(null);
+      window.dispatchEvent(
+        new CustomEvent("ws-status", {
+          detail: { type: "connected", message: "Connected to server" },
+        }),
+      );
       if (reconnectTimeoutRef.current) {
         clearTimeout(reconnectTimeoutRef.current);
         reconnectTimeoutRef.current = null;
@@ -26,6 +31,14 @@ export const useWebSocket = (url: string) => {
     socket.onclose = () => {
       console.log("WebSocket Disconnected");
       setConnected(false);
+      window.dispatchEvent(
+        new CustomEvent("ws-status", {
+          detail: {
+            type: "disconnected",
+            message: "Disconnected from server. Attempting to reconnect...",
+          },
+        }),
+      );
       // Basic reconnection logic
       reconnectTimeoutRef.current = window.setTimeout(() => {
         console.log("Attempting to reconnect...");
