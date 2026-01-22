@@ -21,7 +21,6 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
                 if (last && last.role === 'assistant' && last.id === currentAssistantId) {
                     return [...prev.slice(0, -1), { ...last, content: last.content + content }];
                 } else {
-                    // This handles the first chunk
                     const assistantId = currentAssistantId || uuid();
                     if (!currentAssistantId) setCurrentAssistantId(assistantId);
                     return [...prev, { id: assistantId, role: 'assistant', content, timestamp: Date.now() }];
@@ -33,16 +32,31 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
             setCurrentAssistantId(null);
         };
 
+        const handleError = (e: any) => {
+            const errorMsg: Message = {
+                id: uuid(),
+                role: 'assistant',
+                content: `⚠️ Error: ${e.detail}`,
+                timestamp: Date.now()
+            };
+            setMessages((prev) => [...prev, errorMsg]);
+            setCurrentAssistantId(null);
+        };
+
         window.addEventListener('ws-chunk', handleChunk);
         window.addEventListener('ws-end', handleEnd);
+        window.addEventListener('ws-error', handleError);
 
         return () => {
             window.removeEventListener('ws-chunk', handleChunk);
             window.removeEventListener('ws-end', handleEnd);
+            window.removeEventListener('ws-error', handleError);
         };
     }, [currentAssistantId, setMessages]);
 
     const sendMessage = async (text: string) => {
+        if (!text.trim()) return;
+
         const userMsg: Message = {
             id: uuid(),
             role: "user",

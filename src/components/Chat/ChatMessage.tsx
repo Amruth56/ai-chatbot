@@ -15,7 +15,7 @@ const ChatMessage = () => {
       {messages.map((m)=> (
         <MessageBubble key={m.id} message = {m}/>
       ))}
-      {isStreaming && <TypingIndicator/>}
+      {isStreaming && (!messages.length || messages[messages.length - 1].role !== 'assistant') && <TypingIndicator/>}
     </div>
   )
 }

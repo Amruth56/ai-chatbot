@@ -46,7 +46,6 @@ export const useWebSocket = (url: string) => {
           setIsStreaming(true);
           break;
         case "chunk":
-          // We'll handle state update in the Context to have access to the full messages list
           window.dispatchEvent(
             new CustomEvent("ws-chunk", { detail: data.content }),
           );
@@ -58,6 +57,9 @@ export const useWebSocket = (url: string) => {
         case "error":
           setError(data.message);
           setIsStreaming(false);
+          window.dispatchEvent(
+            new CustomEvent("ws-error", { detail: data.message }),
+          );
           break;
       }
     };
