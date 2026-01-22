@@ -58,6 +58,10 @@ export const ChatProvider = ({children} : {children: React.ReactNode}) => {
             {children}
         </ChatContext.Provider>
     );
+};
 
-
+export const useChat = () => {
+    const checkChatContext = useContext(ChatContext);
+    if(!checkChatContext) throw new Error("useChat must be used inside ChatProvider");
+    return checkChatContext;
 }
