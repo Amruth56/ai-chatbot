@@ -6,8 +6,7 @@ const ClearChatButton = () => {
 
   return (
     <button 
-      className='cursor-pointer text-sm px-3 py-1 rounded border transition-colors hover:opacity-80'
-      style={{ borderColor: 'var(--border-color)' }}
+      className='cursor-pointer text-sm px-3 py-1 rounded border transition-colors hover:opacity-80 border-slate-200 dark:border-slate-700'
       onClick={clearChat}
     >
       Clear Chat
