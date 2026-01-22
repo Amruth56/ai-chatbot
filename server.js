@@ -15,12 +15,9 @@ const wss = new WebSocketServer({ server });
 
 const PORT = 8080;
 const OPENROUTER_API_KEY = process.env.VITE_OPEN_ROUTER_API_KEY;
-const API_URL =
-  process.env.VITE_OPENROUTER_API_URL ||
-  "https://openrouter.ai/api/v1/chat/completions";
-const FRONTEND_URL = process.env.VITE_FRONTEND_URL || "http://localhost:5173";
-const AI_MODEL =
-  process.env.VITE_AI_MODEL || "tngtech/deepseek-r1t2-chimera:free";
+const API_URL = process.env.VITE_OPENROUTER_API_URL;
+const FRONTEND_URL = process.env.VITE_FRONTEND_URL;
+const AI_MODEL = process.env.VITE_AI_MODEL;
 
 if (!OPENROUTER_API_KEY) {
   console.error("VITE_OPEN_ROUTER_API_KEY is missing in .env");
