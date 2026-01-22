@@ -1,8 +1,15 @@
 import React from 'react'
+import ConnectionStatus from './ConnectionStatus'
+import ChatMessage from './ChatMessage'
+import ChatInput from './ChatInput'
 
 const ChatContainer = () => {
   return (
-    <div>ChatContainer</div>
+    <div>
+        <ConnectionStatus/>
+        <ChatMessage/>
+        <ChatInput/>
+    </div>
   )
 }
 
