@@ -5,13 +5,13 @@ const ClearChatButton = () => {
   const {clearChat} = useChat();
 
   return (
-    <div>
-      <button className='cursor-pointer text-sm px-3 py-1 rounded border hover:bg-gray-100 dark:hover:bg-gray-700'
+    <button 
+      className='cursor-pointer text-sm px-3 py-1 rounded border transition-colors hover:opacity-80'
+      style={{ borderColor: 'var(--border-color)' }}
       onClick={clearChat}
-      >
-        Clear Chat
-      </button>
-    </div>
+    >
+      Clear Chat
+    </button>
   )
 }
 
