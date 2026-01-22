@@ -17,13 +17,17 @@ export const ChatProvider = ({children} : {children: React.ReactNode}) => {
         setisStreaming(true);
 
         setMessages((prev) => {
-            const last = prev[prev.length -1];
-            if(last?.role === "assistant"){
-                last.content += chunk;
-                return[...prev.slice(0, -1), last];
+            const last = prev[prev.length - 1];
+            if (last?.role === "assistant") {
+                const updatedLast = { 
+                    ...last, 
+                    content: last.content + chunk 
+                };
+                return [...prev.slice(0, -1), updatedLast];
             }
             return [
-                ...prev,{
+                ...prev,
+                {
                     id: uuid(),
                     role: "assistant",
                     content: chunk,
