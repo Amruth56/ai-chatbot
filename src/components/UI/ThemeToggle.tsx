@@ -1,9 +1,14 @@
-import React from 'react'
+import { useTheme } from "../../context/ThemeContext";
 
-const ThemeTogg = () => {
+export default function ThemeToggle() {
+  const { theme, toggle } = useTheme();
+
   return (
-    <div>ThemeTogg;e</div>
-  )
+    <button
+      onClick={toggle}
+      className="text-sm px-3 py-1 rounded border hover:bg-gray-100 dark:hover:bg-gray-700"
+    >
+      {theme === "light" ? "🌙 Dark" : "☀️ Light"}
+    </button>
+  );
 }
-
-export default ThemeTogg;
