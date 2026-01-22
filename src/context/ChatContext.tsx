@@ -1,14 +1,46 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 import type { Message, ChatContextType } from "../types/chat";
 import { v4 as uuid } from "uuid";
 import useLocalStorage from "../hooks/useLocalStorage";
+import { useWebSocket } from "../hooks/useWebSocket";
 
 const ChatContext = createContext<ChatContextType | null>(null);
 
+const WS_URL = import.meta.env.VITE_WS_URL || "ws://localhost:8080";
+
 export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     const [messages, setMessages] = useLocalStorage<Message[]>("chat", []);
-    const [isStreaming, setisStreaming] = useState(false);
-    const [connected] = useState(true);
+    const { connected, isStreaming, sendMessage: wsSendMessage } = useWebSocket(WS_URL);
+    const [currentAssistantId, setCurrentAssistantId] = useState<string | null>(null);
+
+    useEffect(() => {
+        const handleChunk = (e: any) => {
+            const content = e.detail;
+            setMessages((prev) => {
+                const last = prev[prev.length - 1];
+                if (last && last.role === 'assistant' && last.id === currentAssistantId) {
+                    return [...prev.slice(0, -1), { ...last, content: last.content + content }];
+                } else {
+                    // This handles the first chunk
+                    const assistantId = currentAssistantId || uuid();
+                    if (!currentAssistantId) setCurrentAssistantId(assistantId);
+                    return [...prev, { id: assistantId, role: 'assistant', content, timestamp: Date.now() }];
+                }
+            });
+        };
+
+        const handleEnd = () => {
+            setCurrentAssistantId(null);
+        };
+
+        window.addEventListener('ws-chunk', handleChunk);
+        window.addEventListener('ws-end', handleEnd);
+
+        return () => {
+            window.removeEventListener('ws-chunk', handleChunk);
+            window.removeEventListener('ws-end', handleEnd);
+        };
+    }, [currentAssistantId, setMessages]);
 
     const sendMessage = async (text: string) => {
         const userMsg: Message = {
@@ -19,94 +51,13 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
         };
         
         setMessages((prev) => [...prev, userMsg]);
-        setisStreaming(true);
+        
+        const assistantId = uuid();
+        setCurrentAssistantId(assistantId);
 
-        const apiKey = import.meta.env.VITE_OPEN_ROUTER_API_KEY;
-        if (!apiKey) {
-            throw new Error("VITE_OPEN_ROUTER_API_KEY is missing in your .env file. Please add it and restart the server.");
-        }
-
-        try {
-            const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-                method: "POST",
-                headers: {
-                    "Authorization": `Bearer ${apiKey}`,
-                    "Content-Type": "application/json",
-                    "HTTP-Referer": "http://localhost:5173",
-                    "X-Title": "AI Chatbot"
-                },
-                body: JSON.stringify({
-                    model: "tngtech/deepseek-r1t2-chimera:free",
-                    messages: [...messages, userMsg].map(m => ({ role: m.role, content: m.content })),
-                    stream: true
-                })
-            });
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error?.message || "API request failed");
-            }
-            const reader = response.body?.getReader();
-            const decoder = new TextDecoder();
-            let assistantMessageContent = "";
-            const assistantId = uuid();
-            let messageAdded = false;
-
-            while (true) {
-                const { done, value } = await reader!.read();
-                if (done) break;
-
-                const chunk = decoder.decode(value);
-                const lines = chunk.split("\n");
-
-                for (const line of lines) {
-                    if (line.startsWith("data: ")) {
-                        const data = line.slice(6);
-                        if (data === "[DONE]") continue;
-                        try {
-                            const json = JSON.parse(data);
-                            const content = json.choices[0]?.delta?.content || "";
-                            
-                            if (content) {
-                                assistantMessageContent += content;
-                                
-                                if (!messageAdded) {
-                                    setMessages((prev) => [
-                                        ...prev,
-                                        { id: assistantId, role: "assistant", content: assistantMessageContent, timestamp: Date.now() }
-                                    ]);
-                                    messageAdded = true;
-                                } else {
-                                    setMessages((prev) => {
-                                        const last = prev[prev.length - 1];
-                                        if (last && last.id === assistantId) {
-                                            return [
-                                                ...prev.slice(0, -1),
-                                                { ...last, content: assistantMessageContent }
-                                            ];
-                                        }
-                                        return prev;
-                                    });
-                                }
-                            }
-                        } catch (e) {
-                            console.error("Error parsing JSON chunk", e);
-                        }
-                    }
-                }
-            }
-        } catch (error: any) {
-            console.error("Chat Error:", error);
-            const errorMsg: Message = {
-                id: uuid(),
-                role: "assistant",
-                content: error.message || "Error: Could not connect to the AI. Please check your API key and connection.",
-                timestamp: Date.now()
-            };
-            setMessages((prev) => [...prev, errorMsg]);
-        } finally {
-            setisStreaming(false);
-        }
+        // Map messages for context
+        const history = messages.map(m => ({ role: m.role, content: m.content }));
+        wsSendMessage(text, history);
     };
 
     const clearChat = () => {

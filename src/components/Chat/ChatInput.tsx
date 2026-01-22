@@ -40,8 +40,12 @@ const ChatInput = () => {
           disabled={isStreaming}
           placeholder={isStreaming ? "AI is thinking..." : "Ask me anything..."}
           rows={1}
+          maxLength={1000}
           className="w-full p-3 pr-12 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all resize-none shadow-sm overflow-hidden bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-50 border-2 border-slate-300 dark:border-slate-700"
         />
+        <div className="absolute right-4 bottom-3 text-[10px] text-gray-400 select-none font-medium">
+          {text.length}/1000
+        </div>
       </div>
       
       <button
