@@ -6,7 +6,8 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={toggle}
-      className="cursor-pointer text-sm px-3 py-1 rounded border hover:bg-gray-100 dark:hover:bg-gray-700"
+      className="cursor-pointer text-sm px-3 py-1 rounded border transition-colors hover:opacity-80"
+      style={{ borderColor: 'var(--border-color)' }}
     >
       {theme === "light" ? "🌙 Dark" : "☀️ Light"}
     </button>

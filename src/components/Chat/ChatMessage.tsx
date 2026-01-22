@@ -1,7 +1,8 @@
-import { useChat } from '../../context/ChatContext'
+import { useChat } from '../../context/useChat'
 import MessageBubble from './MessageBubble'
 import TypingIndicator from './TypingIndicator';
 import { useAutoScroll } from "../../hooks/useAutoScroll";
+
 
 
 const ChatMessage = () => {
