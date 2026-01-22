@@ -72,5 +72,6 @@ Approximately **1.5 days** covering architectural design, WebSocket implementati
 ---
 
 ## 🎥 Video Walkthrough (Demo)
-[Click here to watch the demo video](INSERT_YOUR_VIDEO_LINK_HERE)
-*(Note: Replace with your actual YouTube or Loom link)*
+[Click here to watch the demo video]
+1. https://www.loom.com/share/362a8a811f9b4f558517a09997966936
+2. https://www.loom.com/share/61873bd9ab0b48a48d06ca5554e72802
